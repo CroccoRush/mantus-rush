@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Map with Leaflet and D3.js</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    // Initialize the map and set its view to a chosen geographical coordinates and a zoom level
+    var map = L.map('map').setView([51.505, -0.09], 13);
+
+    // Add an OpenStreetMap tile layer to the map
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+
+    // Sample data for route points
+    var routeData = [
+        {lat: 51.505, lng: -0.09, name: 'Point 1'},
+        {lat: 51.510, lng: -0.10, name: 'Point 2'},
+        {lat: 51.515, lng: -0.11, name: 'Point 3'}
+    ];
+
+    map.attributionControl.remove();
+
+    // Function to create markers for route points
+    function createMarkers(data) {
+        data.forEach(function(d) {
+            var marker = L.marker([d.lat, d.lng]).addTo(map);
+            marker.bindPopup(d.name);
+        });
+    }
+
+    // Function to create a line for the route
+    function createRouteLine(data) {
+        var line = d3.line()
+            .x(function(d) { return map.latLngToContainerPoint(new L.LatLng(d.lat, d.lng)).x; })
+            .y(function(d) { return map.latLngToContainerPoint(new L.LatLng(d.lat, d.lng)).y; });
+
+        var routePath = d3.select('svg').append('path')
+            .datum(data)
+            .attr('class', 'route')
+            .attr('d', line);
+    }
+
+    // Call functions to create markers and route line
+    createMarkers(routeData);
+    createRouteLine(routeData);
+</script>
+</body>
+</html>

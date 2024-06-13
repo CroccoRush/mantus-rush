@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet Map with Yandex Maps</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var map = L.map('map').setView([54.762,37.375], 8)   // Карта внутри блока #map
+        // leafletView = new PruneClusterForLeaflet(); // Кластер, в который мы будем складывать маркеры
+    L.yandex('yandex#map').addTo(map);
+    // L.tileLayer('http://vec{s}.maps.yandex.net/tiles?l=map&v=4.55.2&z={z}&x={x}&y={y}&scale=2&lang=ru_RU', {
+    //     subdomains: ['01', '02', '03', '04'],
+    //     attribution: '<a http="yandex.ru" target="_blank">Яндекс</a>',
+    //     reuseTiles: true,
+    //     updateWhenIdle: false
+    // }).addTo(map);
+    // map.options.crs = L.CRS.EPSG3395;
+</script>
+</body>
+</html>
