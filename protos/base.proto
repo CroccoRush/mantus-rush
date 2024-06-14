@@ -1,0 +1,159 @@
+syntax = "proto3";
+
+option go_package = "/user_server/api/pb2/pb;pb";
+
+package example;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+message ErrorStatus {
+  string errorMessage = 1;
+  int32 errorCode = 2;
+}
+
+message Response {
+  string message = 1;
+  google.protobuf.Timestamp timestamp = 2;
+  int32 errorCode = 3;
+}
+
+service Calculator {
+  rpc UpdateState(google.protobuf.Empty) returns (Response);
+
+  rpc GetShipsData (google.protobuf.Empty) returns (ShipsDataResponse);
+  rpc GetShipData (ShipRequest) returns (ShipDataResponse);
+  rpc GetShipsState (google.protobuf.Empty) returns (stream ShipResponse);
+  rpc GetShipState (ShipRequest) returns (ShipResponse);
+
+  rpc NewShip (NewShipRequest) returns (Response);
+}
+
+service User {
+  rpc GetShipsData (google.protobuf.Empty) returns (ShipsDataResponse);
+  rpc GetShipData (ShipRequest) returns (ShipDataResponse);
+  rpc GetShipsState (google.protobuf.Empty) returns (stream ShipResponse);
+  rpc GetShipState (ShipRequest) returns (ShipResponse);
+
+  rpc SetShipState (SetShipRequest) returns (Response);
+  rpc SetShipSimWay (SetShipSimRequest) returns (Response);
+  rpc SetShipsSimWay (stream SetShipSimRequest) returns (Response);
+
+  rpc NewShip (NewShipRequest) returns (Response);
+}
+
+enum IceClass {
+  UNKNOWN = 0;
+  ACR4 = 4;
+  ACR5 = 5;
+  ACR6 = 6;
+  ACR7 = 7;
+  ACR8 = 8;
+  ACR9 = 9;
+}
+// Points are represented as latitude-longitude pairs in the E7 representation
+// (degrees multiplied by 10**7 and rounded to the nearest integer).
+// Latitudes should be in the range +/- 90 degrees and longitude should be in
+// the range +/- 180 degrees (inclusive).
+message GeoPoint {
+  int32 latitude = 1;
+  int32 longitude = 2;
+}
+
+message ShipDataResponse {
+  string name = 1;
+  IceClass class = 2;
+  float velocity = 3;
+  Departure departure = 4;
+  Destination destination = 5;
+  optional Response response = 6;
+}
+
+message Departure {
+  string name = 1;
+  GeoPoint geoPoint = 2;
+}
+
+message Destination {
+  string name = 1;
+  GeoPoint geoPoint = 2;
+}
+
+message ShipsDataResponse {
+  repeated ShipDataResponse ships = 1;
+  optional Response response = 2;
+}
+
+message ShipResponse {
+  float velocity = 1;
+  GeoPoint geoPoint = 2;
+  ShipWay way = 3;
+  optional Response response = 4;
+}
+
+message ShipsResponse {
+  repeated ShipResponse ships = 1;
+  optional Response response = 2;
+}
+
+message ShipWay {
+  repeated GeoPoint geoPoint  = 1;
+  repeated google.protobuf.Timestamp timestamp = 2;
+}
+
+message ShipRequest {
+  string name = 1;
+}
+
+message SetShipRequest {
+  string name = 1;
+  float velocity = 2;
+  GeoPoint geoPoint = 3;
+  google.protobuf.Timestamp timestamp = 4;
+}
+
+message SetShipSimRequest {
+  string name = 1;
+  ShipWay way = 2;
+}
+
+message NewShipRequest {
+  string name = 1;
+  IceClass class = 2;
+  float velocity = 3;
+  string departure = 4;
+  string destination = 5;
+  google.protobuf.Timestamp startTime = 6;
+}
+
+
+service Utils {
+  rpc SetTimestamp (SetTimestampRequest) returns (Response);
+  rpc GetTimestamp (google.protobuf.Empty) returns (GetTimestampResponse);
+  rpc GetIce (GetIceRequest) returns (GetIceResponse);
+}
+
+message SetTimestampRequest {
+  google.protobuf.Timestamp timestamp = 1;
+}
+
+message GetTimestampResponse {
+  google.protobuf.Timestamp timestamp = 1;
+  optional Response response = 2;
+}
+
+message GetIceRequest {
+  google.protobuf.Timestamp timestamp = 1;
+}
+
+message Matrix {
+  int32 rows = 1;
+  int32 cols = 2;
+  repeated double data = 3;
+}
+
+message GetIceResponse {
+  Matrix iceData = 1;
+  google.protobuf.Timestamp timestamp = 2;
+  optional Response response = 3;
+}

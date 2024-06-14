@@ -2,7 +2,7 @@
 <module type="WEB_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Python" name="Python facet">
-      <configuration sdkName="Python 3.11 (2)" />
+      <configuration sdkName="Python 3.10 (mantus-rush)" />
     </facet>
   </component>
   <component name="Go" enabled="true">
@@ -14,9 +14,10 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/build" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/calculator_server/venv" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Python 3.11 (2) interpreter library" level="application" />
+    <orderEntry type="library" name="Python 3.10 (mantus-rush) interpreter library" level="application" />
   </component>
 </module>
